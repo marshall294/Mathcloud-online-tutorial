@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Equations — Year 8 — MathCloud Tutorial</title>
+  <style>
+    :root{
+      --max-width:1100px;
+      --accent:#0b5cff;
+      --muted:#666;
+      --card-bg: #fff;
+      --bg:#f4f7fb;
+      --radius:12px;
+      --gap:18px;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg); color:#0e1726; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      padding:20px; display:flex; justify-content:center; align-items:flex-start; gap:18px;
+    }
+    .container{width:100%; max-width:var(--max-width);}
+
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#00c2ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:14px}
+
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:var(--gap)}
+    .card{background:var(--card-bg);border-radius:var(--radius);padding:18px;box-shadow:0 6px 18px rgba(10,20,40,0.06)}
+
+    /* Lesson sections */
+    .section + .section{margin-top:14px}
+    .section h2{margin:0 0 8px;font-size:16px}
+    .section .step{padding:12px;border-radius:10px;background:#fbfdff;border:1px solid rgba(11,92,255,0.06);margin-bottom:8px}
+    .equation{display:inline-block;background:#f1f5ff;padding:6px 10px;border-radius:6px;margin:6px 0;font-weight:600}
+
+    /* Practice */
+    ol.questions{padding-left:18px;margin:0}
+    ol.questions li{margin-bottom:12px}
+    .q-row{display:flex;gap:8px;align-items:center}
+    input[type="text"], input[type="number"]{padding:8px 10px;border-radius:8px;border:1px solid #d6dde8;background:white;min-width:84px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    button{background:var(--accent);color:white;border:none;padding:10px 12px;border-radius:10px;font-weight:600;cursor:pointer}
+    button.secondary{background:#fff;border:1px solid #d6dde8;color:#0e1726}
+    .muted{color:var(--muted);font-size:13px}
+
+    .answers{margin-top:12px;border-top:1px dashed #e9eef8;padding-top:12px}
+    .solution{background:#fcfcff;padding:12px;border-radius:8px;margin-bottom:8px;border:1px solid #f0f4ff}
+
+    /* responsive */
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr;}
+      .logo{width:40px;height:40px}
+    }
+
+    /* print */
+    @media print{
+      body{background:white;padding:8px}
+      .card{box-shadow:none}
+      button{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">M</div>
+        <div>
+          <h1>Equations — Year 8</h1>
+          <p class="lead">Lesson notes, worked examples and 12 assessment questions — responsive and interactive.</p>
+        </div>
+      </div>
+      <div class="muted">Topic: Linear equations • Level: Year 8</div>
+    </header>
+
+    <main class="grid">
+      <!-- Left: Lessons and examples -->
+      <section class="card">
+        <div class="section">
+          <h2>Learning objectives</h2>
+          <ul class="muted">
+            <li>Understand what an equation is and the meaning of the equals sign (=).</li>
+            <li>Solve one-step and two-step linear equations.</li>
+            <li>Solve equations with brackets and simple fractions.</li>
+            <li>Check solutions by substituting back into the original equation.</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Key ideas & symbols</h2>
+          <div class="muted">
+            <p><strong>=</strong> means <em>equal to</em>. Example: <span class="equation">5 + 3 = 8</span></p>
+            <p>Unknowns are usually written as <strong>x</strong> or <strong>y</strong>. Example: <span class="equation">x + 7 = 13</span></p>
+            <p>Common symbols: <strong>+</strong> add, <strong>-</strong> subtract, <strong>×</strong> multiply, <strong>÷</strong> divide, <strong>√</strong> square root, <strong>±</strong> plus or minus.</p>
+            <p>To solve an equation we do the same operations to both sides to keep it balanced.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Step-by-step method (basic)</h2>
+          <div class="step">
+            <strong>1)</strong> Simplify both sides (expand brackets, collect like terms).<br>
+            <strong>2)</strong> Move terms with the unknown to one side (use + or -).<br>
+            <strong>3)</strong> Move numbers to the other side.<br>
+            <strong>4)</strong> Divide or multiply to find the unknown.<br>
+            <strong>5)</strong> Check by substituting the value back into the original equation.
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Worked examples (with steps)</h2>
+
+          <div class="solution">
+            <strong>Example 1 — One-step</strong>
+            <div class="muted">Solve: <span class="equation">x + 7 = 13</span></div>
+            <ol>
+              <li>Subtract 7 from both sides: <span class="equation">x = 13 − 7</span></li>
+              <li>So <span class="equation">x = 6</span>. Check: <span class="equation">6 + 7 = 13</span>.</li>
+            </ol>
+          </div>
+
+          <div class="solution">
+            <strong>Example 2 — Two-step</strong>
+            <div class="muted">Solve: <span class="equation">3x + 4 = 19</span></div>
+            <ol>
+              <li>Subtract 4 from both sides: <span class="equation">3x = 15</span></li>
+              <li>Divide both sides by 3: <span class="equation">x = 5</span></li>
+              <li>Check: <span class="equation">3×5 + 4 = 15 + 4 = 19</span>.</li>
+            </ol>
+          </div>
+
+          <div class="solution">
+            <strong>Example 3 — Brackets</strong>
+            <div class="muted">Solve: <span class="equation">2(x + 3) = 14</span></div>
+            <ol>
+              <li>Expand: <span class="equation">2x + 6 = 14</span></li>
+              <li>Subtract 6: <span class="equation">2x = 8</span></li>
+              <li>Divide by 2: <span class="equation">x = 4</span></li>
+            </ol>
+          </div>
+
+          <div class="solution">
+            <strong>Example 4 — Fractions</strong>
+            <div class="muted">Solve: <span class="equation">\( \tfrac{1}{2}x = 6 \)</span></div>
+            <ol>
+              <li>Multiply both sides by 2: <span class="equation">x = 12</span></li>
+              <li>Check: <span class="equation">\tfrac{1}{2} \times 12 = 6</span></li>
+            </ol>
+          </div>
+
+        </div>
+
+        <div class="section">
+          <h2>Hints for checking answers</h2>
+          <ul class="muted">
+            <li>Always substitute your solution back into the original equation.</li>
+            <li>If both sides are equal after substitution, the solution is correct.</li>
+            <li>For fraction answers, give the exact fraction where possible (e.g. <code>14/3</code>) or a decimal to 2 dp.</li>
+          </ul>
+        </div>
+
+      </section>
+
+      <!-- Right: Practice -->
+      <aside class="card">
+        <h2>Practice — 12 questions</h2>
+        <p class="muted">Type your answer (exact fraction or number). Press <strong>Check</strong> to get instant feedback.</p>
+
+        <ol class="questions" id="questionsList">
+          <li>
+            <div class="q-row">
+              <span>1. Solve: <strong>x + 7 = 13</strong></span>
+              <input aria-label="answer1" data-q="1" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>2. Solve: <strong>4x = 20</strong></span>
+              <input data-q="2" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>3. Solve: <strong>3x + 4 = 19</strong></span>
+              <input data-q="3" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>4. Solve: <strong>2x − 5 = 9</strong></span>
+              <input data-q="4" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>5. Solve: <strong>5x + 3 = 2x + 15</strong></span>
+              <input data-q="5" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>6. Solve: <strong>2(x + 3) = 14</strong></span>
+              <input data-q="6" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>7. Solve: <strong>\(\tfrac{1}{2}x = 6\)</strong></span>
+              <input data-q="7" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>8. Solve: <strong>\(\dfrac{x}{3} + 2 = 7\)</strong></span>
+              <input data-q="8" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>9. Solve: <strong>0.5x + 1 = 4</strong></span>
+              <input data-q="9" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>10. Solve: <strong>−3x + 2 = 11</strong></span>
+              <input data-q="10" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>11. Solve: <strong>4(x − 1) = 2x + 10</strong></span>
+              <input data-q="11" type="text" />
+            </div>
+          </li>
+          <li>
+            <div class="q-row">
+              <span>12. Solve: <strong>\(\dfrac{3x + 2}{2} = 8\)</strong></span>
+              <input data-q="12" type="text" />
+            </div>
+          </li>
+        </ol>
+
+        <div class="controls">
+          <button id="checkBtn">Check my answers</button>
+          <button class="secondary" id="clearBtn">Clear</button>
+          <button class="secondary" id="showBtn">Show solutions</button>
+        </div>
+
+        <div id="feedback" class="answers" aria-live="polite"></div>
+
+        <div id="solutions" class="answers" style="display:none">
+          <h3>Answer key (with steps)</h3>
+          <div class="solution"><strong>1.</strong> x + 7 = 13 → x = 13 − 7 = <strong>6</strong></div>
+          <div class="solution"><strong>2.</strong> 4x = 20 → x = 20 ÷ 4 = <strong>5</strong></div>
+          <div class="solution"><strong>3.</strong> 3x + 4 = 19 → 3x = 15 → x = 5</div>
+          <div class="solution"><strong>4.</strong> 2x − 5 = 9 → 2x = 14 → x = 7</div>
+          <div class="solution"><strong>5.</strong> 5x + 3 = 2x + 15 → 3x = 12 → x = 4</div>
+          <div class="solution"><strong>6.</strong> 2(x + 3) = 14 → 2x + 6 = 14 → 2x = 8 → x = 4</div>
+          <div class="solution"><strong>7.</strong> (1/2)x = 6 → x = 6 × 2 = <strong>12</strong></div>
+          <div class="solution"><strong>8.</strong> x/3 + 2 = 7 → x/3 = 5 → x = 15</div>
+          <div class="solution"><strong>9.</strong> 0.5x + 1 = 4 → 0.5x = 3 → x = 3 ÷ 0.5 = <strong>6</strong></div>
+          <div class="solution"><strong>10.</strong> −3x + 2 = 11 → −3x = 9 → x = −3</div>
+          <div class="solution"><strong>11.</strong> 4(x − 1) = 2x + 10 → 4x − 4 = 2x + 10 → 2x = 14 → x = 7</div>
+          <div class="solution"><strong>12.</strong> (3x + 2)/2 = 8 → 3x + 2 = 16 → 3x = 14 → x = <strong>14/3</strong> (≈ 4.666...)</div>
+        </div>
+
+      </aside>
+
+    </main>
+  </div>
+
+  <script>
+    // Answers keyed as strings (allow fractions) — keys are question numbers
+    const answers = {
+      1: '6',2:'5',3:'5',4:'7',5:'4',6:'4',7:'12',8:'15',9:'6',10:'-3',11:'7',12:'14/3'
+    };
+
+    function parseValue(s){
+      // trim spaces
+      if(!s && s !== 0) return null;
+      s = String(s).trim();
+      if(s === '') return null;
+      // if fraction like a/b
+      if(s.includes('/')){
+        const parts = s.split('/').map(p => p.trim());
+        if(parts.length === 2 && parts.every(p => !isNaN(p) && p!="")){
+          return Number(parts[0]) / Number(parts[1]);
+        }
+        // try parse as float fallback
+      }
+      // allow trailing approx symbol
+      s = s.replace(/[≈≈~\s]+/g,'');
+      const n = Number(s);
+      return isNaN(n)? null : n;
+    }
+
+    function isCorrect(userStr, correctStr){
+      // Accept exact fraction strings or numeric within tolerance
+      if(!userStr) return false;
+      userStr = String(userStr).trim();
+      correctStr = String(correctStr).trim();
+      // direct string match (allowing whitespace)
+      if(userStr.replace(/\s+/g,'') === correctStr.replace(/\s+/g,'')) return true;
+      // try numeric compare
+      const u = parseValue(userStr);
+      const c = parseValue(correctStr);
+      if(u === null || c === null) return false;
+      return Math.abs(u - c) < 1e-6;
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', ()=>{
+      const inputs = document.querySelectorAll('input[data-q]');
+      let correctCount = 0;
+      let feedback = '';
+      inputs.forEach(input =>{
+        const q = input.getAttribute('data-q');
+        const user = input.value;
+        const ok = isCorrect(user, answers[q]);
+        if(ok) correctCount++;
+        const indicator = ok ? '✅' : '❌';
+        feedback += `<div class=\"solution\">${indicator} <strong>Q${q}.</strong> Your answer: ${user || '<em>blank</em>'} — ${ok?'<span style=\"color:green\">Correct</span>':'<span style=\"color:#a00\">Incorrect</span>'}</div>`;
+      });
+      feedback = `<p class=\"muted\">You got <strong>${correctCount}</strong> out of <strong>12</strong>.</p>` + feedback;
+      document.getElementById('feedback').innerHTML = feedback;
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', ()=>{
+      document.querySelectorAll('input[data-q]').forEach(i=>i.value='');
+      document.getElementById('feedback').innerHTML = '';
+    });
+
+    document.getElementById('showBtn').addEventListener('click', ()=>{
+      const sol = document.getElementById('solutions');
+      if(sol.style.display === 'none'){
+        sol.style.display = 'block'; document.getElementById('showBtn').textContent = 'Hide solutions';
+      } else { sol.style.display = 'none'; document.getElementById('showBtn').textContent = 'Show solutions'; }
+    });
+
+    // enable Enter key to check a single input when focused
+    document.querySelectorAll('input[data-q]').forEach(inp=>{
+      inp.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault(); document.getElementById('checkBtn').click();
+        }
+      })
+    });
+  </script>
+</body>
+</html>
