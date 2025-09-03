@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Equations — Year 8 — MathCloud Tutorial</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
   <style>
     :root{
       --max-width:1100px;
@@ -165,85 +170,87 @@
 
       </section>
 
-      <!-- Right: Practice -->
-      <aside class="card">
-        <h2>Practice — 12 questions</h2>
-        <p class="muted">Type your answer (exact fraction or number). Press <strong>Check</strong> to get instant feedback.</p>
+<!-- Right: Practice -->
+<aside class="card">
+  <h2>Practice — 12 questions</h2>
+  <p class="muted">Type your answer (exact fraction or number). Press <strong>Check</strong> to get instant feedback.</p>
 
-        <ol class="questions" id="questionsList">
-          <li>
-            <div class="q-row">
-              <span>1. Solve: <strong>x + 7 = 13</strong></span>
-              <input aria-label="answer1" data-q="1" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>2. Solve: <strong>4x = 20</strong></span>
-              <input data-q="2" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>3. Solve: <strong>3x + 4 = 19</strong></span>
-              <input data-q="3" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>4. Solve: <strong>2x − 5 = 9</strong></span>
-              <input data-q="4" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>5. Solve: <strong>5x + 3 = 2x + 15</strong></span>
-              <input data-q="5" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>6. Solve: <strong>2(x + 3) = 14</strong></span>
-              <input data-q="6" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>7. Solve: <strong>\(\tfrac{1}{2}x = 6\)</strong></span>
-              <input data-q="7" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>8. Solve: <strong>\(\dfrac{x}{3} + 2 = 7\)</strong></span>
-              <input data-q="8" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>9. Solve: <strong>0.5x + 1 = 4</strong></span>
-              <input data-q="9" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>10. Solve: <strong>−3x + 2 = 11</strong></span>
-              <input data-q="10" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>11. Solve: <strong>4(x − 1) = 2x + 10</strong></span>
-              <input data-q="11" type="text" />
-            </div>
-          </li>
-          <li>
-            <div class="q-row">
-              <span>12. Solve: <strong>\(\dfrac{3x + 2}{2} = 8\)</strong></span>
-              <input data-q="12" type="text" />
-            </div>
-          </li>
-        </ol>
+  <ol class="questions" id="questionsList">
+    <li>
+      <div class="q-row">
+        <span>1. Solve: <strong>\(x + 7 = 13\)</strong></span>
+        <input aria-label="answer1" data-q="1" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>2. Solve: <strong>\(4x = 20\)</strong></span>
+        <input data-q="2" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>3. Solve: <strong>\(3x + 4 = 19\)</strong></span>
+        <input data-q="3" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>4. Solve: <strong>\(2x - 5 = 9\)</strong></span>
+        <input data-q="4" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>5. Solve: <strong>\(5x + 3 = 2x + 15\)</strong></span>
+        <input data-q="5" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>6. Solve: <strong>\(2(x + 3) = 14\)</strong></span>
+        <input data-q="6" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>7. Solve: <strong>\(\dfrac{1}{2}x = 6\)</strong></span>
+        <input data-q="7" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>8. Solve: <strong>\(\dfrac{x}{3} + 2 = 7\)</strong></span>
+        <input data-q="8" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>9. Solve: <strong>\(\dfrac{1}{2}x + 1 = 4\)</strong></span>
+        <input data-q="9" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>10. Solve: <strong>\(-3x + 2 = 11\)</strong></span>
+        <input data-q="10" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>11. Solve: <strong>\(4(x - 1) = 2x + 10\)</strong></span>
+        <input data-q="11" type="text" />
+      </div>
+    </li>
+    <li>
+      <div class="q-row">
+        <span>12. Solve: <strong>\(\dfrac{3x + 2}{2} = 8\)</strong></span>
+        <input data-q="12" type="text" />
+      </div>
+    </li>
+  </ol>
+</aside>
+
 
         <div class="controls">
           <button id="checkBtn">Check my answers</button>
@@ -352,3 +359,4 @@
   </script>
 </body>
 </html>
+
