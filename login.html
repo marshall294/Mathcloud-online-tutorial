@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Student Login — MathCloud Tutorial</title>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+  <style>
+    body { font-family:"Poppins",sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; background:#f3f4f6; margin:0; }
+    .login-box { background:white; padding:2rem; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:100%; max-width:400px; }
+    h2 { text-align:center; color:#2563eb; margin-bottom:1.5rem; }
+    label { display:block; margin-top:1rem; font-weight:500; }
+    input { width:100%; padding:.6rem; margin-top:.3rem; border:1px solid #ccc; border-radius:6px; }
+    button { margin-top:1.5rem; width:100%; background:#2563eb; color:white; border:none; padding:.7rem; border-radius:6px; cursor:pointer; font-weight:500; }
+    button:hover { opacity:.9; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>🎓 Student Login</h2>
+    <form id="loginForm">
+      <label>Email <input type="email" id="email" required></label>
+      <label>Password <input type="password" id="password" required></label>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWdRUrqDZfs5LfLmrZmp65AQicunmI7HY",
+    authDomain: "project-1b70d.firebaseapp.com",
+    databaseURL: "https://project-1b70d-default-rtdb.firebaseio.com",
+    projectId: "project-1b70d",
+    storageBucket: "project-1b70d.firebasestorage.app",
+    messagingSenderId: "910870680292",
+    appId: "1:910870680292:web:ee707c90033400f1ba92f1"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  const loginForm = document.getElementById("loginForm");
+  loginForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    try {
+      const cred = await auth.signInWithEmailAndPassword(email, password);
+      localStorage.setItem("studentId", cred.user.uid);
+      window.location.href = "dashboard.html";
+    } catch (err) {
+      alert("Login failed: " + err.message);
+    }
+  });
+</script>
+</body>
+</html>

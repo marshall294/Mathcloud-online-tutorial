@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Student Dashboard — MathCloud Tutorial</title>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+  <style>
+    body { font-family:"Poppins",sans-serif; margin:0; background:#f9fafb; }
+    header { background:#2563eb; color:white; padding:1rem; font-size:1.4rem; font-weight:600; text-align:center; }
+    main { max-width:1100px; margin:auto; padding:1rem; }
+    h2 { color:#2563eb; margin-top:1rem; }
+    .subjects { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-top:1rem; }
+    .card { background:white; padding:1.5rem; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer; text-align:center; transition:transform .2s; }
+    .card:hover { transform:scale(1.05); }
+    .lessons { margin-top:2rem; }
+    .lesson { background:white; padding:1rem; border-radius:6px; margin-bottom:1rem; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+    .lesson a { color:#2563eb; font-weight:500; text-decoration:none; }
+    .logout { margin-top:1rem; background:#ef4444; border:none; color:white; padding:.6rem 1rem; border-radius:6px; cursor:pointer; }
+  </style>
+</head>
+<body>
+<header>📚 MathCloud Tutorial — Student Dashboard</header>
+<main>
+  <h2 id="studentName">Welcome</h2>
+  <div class="subjects" id="subjects"></div>
+
+  <section class="lessons" id="lessonsSection" style="display:none;">
+    <h2 id="subjectTitle"></h2>
+    <div id="lessonsList"></div>
+  </section>
+  <button class="logout" onclick="logout()">Logout</button>
+</main>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWdRUrqDZfs5LfLmrZmp65AQicunmI7HY",
+    authDomain: "project-1b70d.firebaseapp.com",
+    databaseURL: "https://project-1b70d-default-rtdb.firebaseio.com",
+    projectId: "project-1b70d",
+    storageBucket: "project-1b70d.firebasestorage.app",
+    messagingSenderId: "910870680292",
+    appId: "1:910870680292:web:ee707c90033400f1ba92f1"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const auth = firebase.auth();
+
+  const studentId = localStorage.getItem("studentId");
+  if (!studentId) window.location.href = "login.html";
+
+  // Load student info
+  db.ref("students/"+studentId).once("value").then(snap => {
+    const s = snap.val();
+    if (!s) { alert("Student not found."); logout(); return; }
+    document.getElementById("studentName").textContent = "Welcome, " + s.name;
+    const subjectsDiv = document.getElementById("subjects");
+    s.subjects.forEach(sub => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.textContent = sub;
+      card.onclick = () => loadLessons(sub);
+      subjectsDiv.appendChild(card);
+    });
+  });
+
+  function loadLessons(subject) {
+    document.getElementById("lessonsSection").style.display = "block";
+    document.getElementById("subjectTitle").textContent = subject + " Lessons";
+    const list = document.getElementById("lessonsList");
+    list.innerHTML = "Loading...";
+
+    db.ref("lessons/"+studentId).orderByKey().once("value").then(snap => {
+      let lessons = [];
+      snap.forEach(child => {
+        const l = child.val();
+        if (l.subject === subject) lessons.push(l);
+      });
+      lessons.reverse(); // newest on top
+      list.innerHTML = "";
+      if (!lessons.length) {
+        list.innerHTML = "<p>No lessons yet.</p>";
+      } else {
+        lessons.forEach(l => {
+          const div = document.createElement("div");
+          div.className = "lesson";
+          div.innerHTML = `<strong>${l.title}</strong><br><a href="${l.url}" target="_blank">Open Lesson</a>`;
+          list.appendChild(div);
+        });
+      }
+    });
+  }
+
+  function logout() {
+    auth.signOut();
+    localStorage.removeItem("studentId");
+    window.location.href = "login.html";
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lessons — MathCloud Tutorial</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+  <style>
+    body { font-family: "Poppins", sans-serif; margin:0; background:#f9fafb; }
+    header { background:#16a34a; color:white; text-align:center; padding:1rem; font-size:1.4rem; font-weight:600; }
+    main { max-width:1100px; margin:auto; padding:1rem; }
+    h2 { margin-top:2rem; color:#16a34a; }
+    form { background:white; padding:1rem; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    label { display:block; margin-top:1rem; font-weight:500; }
+    input, select { width:100%; padding:.6rem; border:1px solid #ccc; border-radius:6px; }
+    button { margin-top:1rem; background:#16a34a; color:white; padding:.6rem 1.2rem; border:none; border-radius:6px; cursor:pointer; font-weight:500; }
+    button:hover { opacity:0.9; }
+    table { width:100%; border-collapse:collapse; margin-top:1rem; background:white; border-radius:8px; overflow:hidden; }
+    th, td { padding:.8rem; border-bottom:1px solid #eee; text-align:left; }
+    th { background:#f1f5f9; }
+    .actions button { margin-right:.4rem; padding:.4rem .8rem; font-size:.9rem; }
+    .danger { background:#ef4444; color:white; }
+  </style>
+</head>
+<body>
+<header>📖 MathCloud Tutorial — Lessons</header>
+<main>
+  <!-- Create Lesson -->
+  <h2>Create Lesson</h2>
+  <form id="lessonForm">
+    <label>Student <select id="lessonStudent"></select></label>
+    <label>Subject <select id="lessonSubject">
+      <option>Mathematics</option>
+      <option>Science</option>
+      <option>Physics</option>
+      <option>ICT</option>
+      <option>Further Mathematics</option>
+    </select></label>
+    <label>Lesson Title <input type="text" id="lessonTitle" required></label>
+    <label>Lesson URL <input type="url" id="lessonUrl" required></label>
+    <button type="submit">➕ Add Lesson</button>
+  </form>
+
+  <!-- Lessons List -->
+  <h2>Lessons</h2>
+  <table>
+    <thead>
+      <tr><th>Student</th><th>Subject</th><th>Title</th><th>URL</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="lessonsTable"></tbody>
+  </table>
+</main>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWdRUrqDZfs5LfLmrZmp65AQicunmI7HY",
+    authDomain: "project-1b70d.firebaseapp.com",
+    databaseURL: "https://project-1b70d-default-rtdb.firebaseio.com",
+    projectId: "project-1b70d",
+    storageBucket: "project-1b70d.firebasestorage.app",
+    messagingSenderId: "910870680292",
+    appId: "1:910870680292:web:ee707c90033400f1ba92f1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const lessonForm = document.getElementById('lessonForm');
+  const lessonStudent = document.getElementById('lessonStudent');
+  const lessonsTable = document.getElementById('lessonsTable');
+  let studentsCache = {};
+
+  // Load students
+  db.ref("students").on("value", snap => {
+    lessonStudent.innerHTML = "";
+    studentsCache = {};
+    snap.forEach(child => {
+      const student = child.val();
+      studentsCache[child.key] = student.name;
+      let opt = document.createElement("option");
+      opt.value = child.key;
+      opt.textContent = student.name;
+      lessonStudent.appendChild(opt);
+    });
+  });
+
+  // Add lesson
+  lessonForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const sid = lessonStudent.value;
+    const subject = document.getElementById('lessonSubject').value;
+    const title = document.getElementById('lessonTitle').value;
+    const url = document.getElementById('lessonUrl').value;
+
+    db.ref("lessons/"+sid).push({ subject, title, url });
+    lessonForm.reset();
+  });
+
+  // Render lessons
+  db.ref("lessons").on("value", snap => {
+    lessonsTable.innerHTML = "";
+    snap.forEach(studentSnap => {
+      const sid = studentSnap.key;
+      studentSnap.forEach(lessonSnap => {
+        const l = lessonSnap.val();
+        const key = lessonSnap.key;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${studentsCache[sid] || sid}</td>
+          <td>${l.subject}</td>
+          <td>${l.title}</td>
+          <td><a href="${l.url}" target="_blank">Open</a></td>
+          <td class="actions">
+            <button class="danger" onclick="deleteLesson('${sid}','${key}')">Delete</button>
+          </td>
+        `;
+        lessonsTable.appendChild(tr);
+      });
+    });
+  });
+
+  function deleteLesson(sid, lid) {
+    if (confirm("Delete lesson?")) {
+      db.ref("lessons/"+sid+"/"+lid).remove();
+    }
+  }
+  window.deleteLesson = deleteLesson;
+</script>
+</body>
+</html>

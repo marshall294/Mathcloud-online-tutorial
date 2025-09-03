@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MathCloud Tutorial — Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Firebase (Compat v9) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --primary:#2563eb;
+      --primary-600:#1d4ed8;
+      --danger:#ef4444;
+      --success:#16a34a;
+      --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+    header{background:linear-gradient(90deg,var(--primary),#4f46e5);color:#fff;padding:16px 20px;text-align:center;font-weight:700;font-size:1.2rem}
+    .container{max-width:1100px;margin:24px auto;padding:0 16px}
+
+    /* Tabs */
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .tab-btn{border:1px solid var(--border);background:var(--card);color:var(--text);padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+    .tab-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 4px 10px rgba(15,23,42,.04);margin-bottom:16px}
+
+    /* Forms */
+    .row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .row-3{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px}
+    label{font-size:.9rem;font-weight:600;margin-bottom:4px;display:block;color:var(--muted)}
+    input[type="text"], input[type="email"], input[type="url"], select, textarea{
+      width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none
+    }
+    textarea{min-height:90px;resize:vertical}
+    .subjects{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;cursor:pointer}
+    .chip input{transform:scale(1.1)}
+    .btn{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#0ea5e9}
+    .btn.success{background:var(--success)}
+    .btn.danger{background:var(--danger)}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+
+    /* Tables */
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left;font-size:.95rem}
+    th{background:#f8fafc;color:#0f172a}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+    /* Drawer (Edit Student) */
+    .drawer{position:fixed;inset:0;display:none;align-items:flex-start;justify-content:flex-end;background:rgba(15,23,42,.35);z-index:50}
+    .drawer.open{display:flex}
+    .drawer-panel{width:520px;max-width:100%;background:#fff;height:100%;padding:18px 16px;border-left:1px solid var(--border);overflow:auto}
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .close-x{background:transparent;border:none;font-size:1.5rem;cursor:pointer}
+
+    .muted{color:var(--muted);font-size:.9rem}
+    .count-badge{display:inline-block;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;border-radius:999px;padding:4px 10px;font-weight:700}
+
+    @media (max-width:900px){
+      .row,.row-3{grid-template-columns:1fr}
+      .drawer-panel{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <header>📘 MathCloud Tutorial — Admin Dashboard</header>
+  <div class="container">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="studentsTab">Students</button>
+      <button class="tab-btn" data-tab="lessonsTab">Lessons</button>
+    </div>
+
+    <!-- STUDENTS -->
+    <section id="studentsTab">
+      <div class="card">
+        <h2 style="margin:0 0 8px">Create Student</h2>
+        <p class="muted" style="margin:0 0 12px">Add student details and select their subjects.</p>
+        <form id="studentForm">
+          <div class="row">
+            <div>
+              <label>Full Name</label>
+              <input type="text" id="s_name" required placeholder="e.g., Adaeze Obi" />
+            </div>
+            <div>
+              <label>Email</label>
+              <input type="email" id="s_email" required placeholder="e.g., ada@example.com" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Class / Year</label>
+              <input type="text" id="s_class" required placeholder="e.g., Year 10" />
+            </div>
+            <div>
+              <label>Status</label>
+              <select id="s_status">
+                <option value="Active">Active</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+          <label>Subjects</label>
+          <div class="subjects" id="s_subjects">
+            <!-- chips -->
+          </div>
+          <button class="btn" type="submit">➕ Add Student</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <h2 style="margin:0">Students</h2>
+          <span class="muted">Click ✏️ to edit student info & subjects.</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name / Email</th>
+              <th>Class</th>
+              <th>Status</th>
+              <th>Subjects</th>
+              <th>Lessons</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LESSONS -->
+    <section id="lessonsTab" style="display:none">
+      <div class="card">
+        <h2 style="margin:0 0 8px">Create Lesson</h2>
+        <p class="muted" style="margin:0 0 12px">Lessons are tied to a <b>Student</b> and a <b>Subject</b> the student is enrolled in.</p>
+        <form id="lessonForm">
+          <div class="row-3">
+            <div>
+              <label>Student</label>
+              <select id="l_student" required>
+                <option value="">— Select Student —</option>
+              </select>
+            </div>
+            <div>
+              <label>Subject</label>
+              <select id="l_subject" required disabled>
+                <option value="">— Select Subject —</option>
+              </select>
+            </div>
+            <div>
+              <label>Format</label>
+              <select id="l_format">
+                <option value="url">Link / URL</option>
+                <option value="text">Text Content</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Lesson Title</label>
+              <input type="text" id="l_title" required placeholder="e.g., Indices — Laws & Applications" />
+            </div>
+            <div id="urlWrap">
+              <label>Lesson URL</label>
+              <input type="url" id="l_url" placeholder="https://..." />
+            </div>
+          </div>
+          <div id="textWrap" style="display:none">
+            <label>Lesson Content (Text)</label>
+            <textarea id="l_text" placeholder="Paste brief lesson notes or overview here..."></textarea>
+          </div>
+          <button class="btn" type="submit">➕ Add Lesson</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <h2 style="margin:0">Lessons</h2>
+          <span class="muted">Edit or remove lessons anytime.</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Subject</th>
+              <th>Title</th>
+              <th>Source</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="lessonsTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- EDIT STUDENT DRAWER -->
+  <div class="drawer" id="editDrawer" aria-hidden="true">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <h3 style="margin:0">✏️ Edit Student</h3>
+        <button class="close-x" onclick="closeDrawer()">×</button>
+      </div>
+      <form id="editStudentForm">
+        <input type="hidden" id="e_id" />
+        <div class="row">
+          <div>
+            <label>Full Name</label>
+            <input type="text" id="e_name" required />
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" id="e_email" required />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Class / Year</label>
+            <input type="text" id="e_class" required />
+          </div>
+          <div>
+            <label>Status</label>
+            <select id="e_status">
+              <option>Active</option>
+              <option>On Hold</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+        </div>
+        <label>Subjects</label>
+        <div class="subjects" id="e_subjects"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn success" type="submit">💾 Save Changes</button>
+          <button class="btn danger" type="button" onclick="deleteStudentConfirm()">🗑️ Delete Student</button>
+          <button class="btn secondary" type="button" onclick="closeDrawer()">Cancel</button>
+        </div>
+        <p class="muted" style="margin-top:10px">Created: <span id="e_created"></span> • Updated: <span id="e_updated"></span></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ----- Firebase Init -----
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWdRUrqDZfs5LfLmrZmp65AQicunmI7HY",
+      authDomain: "project-1b70d.firebaseapp.com",
+      databaseURL: "https://project-1b70d-default-rtdb.firebaseio.com",
+      projectId: "project-1b70d",
+      storageBucket: "project-1b70d.firebasestorage.app",
+      messagingSenderId: "910870680292",
+      appId: "1:910870680292:web:ee707c90033400f1ba92f1"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // ----- Constants -----
+    const SUBJECTS = ["Mathematics","Science","Physics","ICT","Further Mathematics"];
+
+    // ----- DOM Refs -----
+    const tabs = document.querySelectorAll(".tab-btn");
+    const studentsTab = document.getElementById("studentsTab");
+    const lessonsTab = document.getElementById("lessonsTab");
+
+    const studentForm = document.getElementById("studentForm");
+    const studentsTable = document.getElementById("studentsTable");
+    const s_subjectsWrap = document.getElementById("s_subjects");
+
+    const lessonForm = document.getElementById("lessonForm");
+    const l_student = document.getElementById("l_student");
+    const l_subject = document.getElementById("l_subject");
+    const l_format = document.getElementById("l_format");
+    const l_title = document.getElementById("l_title");
+    const l_url = document.getElementById("l_url");
+    const l_text = document.getElementById("l_text");
+    const urlWrap = document.getElementById("urlWrap");
+    const textWrap = document.getElementById("textWrap");
+    const lessonsTableBody = document.getElementById("lessonsTable");
+
+    // Edit Drawer
+    const drawer = document.getElementById("editDrawer");
+    const editForm = document.getElementById("editStudentForm");
+    const e_id = document.getElementById("e_id");
+    const e_name = document.getElementById("e_name");
+    const e_email = document.getElementById("e_email");
+    const e_class = document.getElementById("e_class");
+    const e_status = document.getElementById("e_status");
+    const e_subjectsWrap = document.getElementById("e_subjects");
+    const e_created = document.getElementById("e_created");
+    const e_updated = document.getElementById("e_updated");
+
+    // State
+    let studentsCache = {};          // id -> student
+    let lessonsCount = {};           // id -> count
+    let currentEditId = null;
+
+    // ----- Helpers -----
+    function renderSubjectChips(container, selectedSet = new Set(), prefix="s_"){
+      container.innerHTML = "";
+      SUBJECTS.forEach(sub => {
+        const id = `${prefix}${sub.replace(/\s+/g,'_')}`;
+        const label = document.createElement("label");
+        label.className = "chip";
+        label.innerHTML = `
+          <input type="checkbox" id="${id}" value="${sub}" ${selectedSet.has(sub) ? "checked" : ""}/>
+          <span>${sub}</span>
+        `;
+        container.appendChild(label);
+      });
+    }
+
+    function getCheckedSubjects(container){
+      return Array.from(container.querySelectorAll("input[type=checkbox]:checked")).map(cb => cb.value);
+    }
+
+    function formatDate(ts){
+      if(!ts) return "-";
+      const d = new Date(ts);
+      return d.toLocaleString();
+    }
+
+    function openDrawer(){ drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false"); }
+    function closeDrawer(){ drawer.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); currentEditId=null; }
+
+    // ----- Tabs -----
+    tabs.forEach(btn=>{
+      btn.addEventListener("click", (e)=>{
+        tabs.forEach(b=>b.classList.remove("active"));
+        e.currentTarget.classList.add("active");
+        const tab = e.currentTarget.getAttribute("data-tab");
+        studentsTab.style.display = tab==="studentsTab" ? "" : "none";
+        lessonsTab.style.display = tab==="lessonsTab" ? "" : "none";
+      });
+    });
+
+    // Initial render of subject chips in create form
+    renderSubjectChips(s_subjectsWrap);
+
+    // ----- Students: CREATE -----
+    studentForm.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const name = document.getElementById("s_name").value.trim();
+      const email = document.getElementById("s_email").value.trim();
+      const sclass = document.getElementById("s_class").value.trim();
+      const status = document.getElementById("s_status").value;
+      const subjects = getCheckedSubjects(s_subjectsWrap);
+
+      if(!subjects.length){ alert("Please select at least one subject"); return; }
+
+      const id = db.ref("students").push().key;
+      const now = Date.now();
+      const data = {
+        id, name, email, class: sclass, status,
+        subjects: subjects.reduce((acc,s)=> (acc[s]=true, acc), {}),
+        createdAt: now, updatedAt: now
+      };
+      await db.ref("students/"+id).set(data);
+      studentForm.reset();
+      renderSubjectChips(s_subjectsWrap); // reset chips
+    });
+
+    // ----- Students: READ (Realtime) -----
+    db.ref("students").on("value", (snap)=>{
+      studentsCache = snap.val() || {};
+      renderStudentsTable();
+      populateLessonStudentSelect();
+    });
+
+    // Lessons count per student (Realtime)
+    db.ref("lessons").on("value", (snap)=>{
+      lessonsCount = {};
+      const all = snap.val() || {};
+      Object.keys(all).forEach(studentId=>{
+        lessonsCount[studentId] = Object.keys(all[studentId] || {}).length;
+      });
+      renderStudentsTable(); // update counts
+      renderLessonsTable(all);
+    });
+
+    function renderStudentsTable(){
+      studentsTable.innerHTML = "";
+      const keys = Object.keys(studentsCache);
+      if(!keys.length){
+        studentsTable.innerHTML = `<tr><td colspan="6" class="muted">No students yet.</td></tr>`;
+        return;
+      }
+      keys.forEach(id=>{
+        const s = studentsCache[id];
+        const subjects = s.subjects ? Object.keys(s.subjects) : [];
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>
+            <div style="font-weight:700">${s.name}</div>
+            <div class="muted">${s.email}</div>
+          </td>
+          <td>${s.class || "-"}</td>
+          <td>${s.status || "-"}</td>
+          <td>${subjects.length ? subjects.join(", ") : "-"}</td>
+          <td><span class="count-badge">${lessonsCount[id] || 0}</span></td>
+          <td class="actions">
+            <button class="btn" onclick="startEditStudent('${id}')">✏️ Edit</button>
+          </td>
+        `;
+        studentsTable.appendChild(tr);
+      });
+    }
+
+    // Populate Student select in Lessons form
+    function populateLessonStudentSelect(){
+      const current = l_student.value;
+      l_student.innerHTML = `<option value="">— Select Student —</option>`;
+      Object.values(studentsCache).forEach(s=>{
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = s.name;
+        l_student.appendChild(opt);
+      });
+      // restore previous selection if still exists
+      if(current && studentsCache[current]) l_student.value = current;
+      updateSubjectSelectForStudent();
+    }
+
+    // When a student is selected, show only their subjects
+    l_student.addEventListener("change", updateSubjectSelectForStudent);
+    function updateSubjectSelectForStudent(){
+      l_subject.innerHTML = `<option value="">— Select Subject —</option>`;
+      const studentId = l_student.value;
+      if(!studentId){ l_subject.disabled = true; return; }
+      const s = studentsCache[studentId];
+      const subs = s?.subjects ? Object.keys(s.subjects) : [];
+      subs.forEach(sub=>{
+        const opt = document.createElement("option");
+        opt.value = sub;
+        opt.textContent = sub;
+        l_subject.appendChild(opt);
+      });
+      l_subject.disabled = subs.length === 0;
+    }
+
+    // Lesson format toggle
+    l_format.addEventListener("change", ()=>{
+      const isUrl = l_format.value === "url";
+      urlWrap.style.display = isUrl ? "" : "none";
+      textWrap.style.display = isUrl ? "none" : "";
+    });
+
+    // ----- Lessons: CREATE -----
+    lessonForm.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const studentId = l_student.value;
+      const subject = l_subject.value;
+      const title = l_title.value.trim();
+      const format = l_format.value;
+      const url = l_url.value.trim();
+      const text = l_text.value.trim();
+
+      if(!studentId){ alert("Please select a student"); return; }
+      if(!subject){ alert("Please select a subject for that student"); return; }
+      if(format==="url" && !url){ alert("Please provide a URL"); return; }
+      if(format==="text" && !text){ alert("Please provide lesson text"); return; }
+
+      const id = db.ref(`lessons/${studentId}`).push().key;
+      const now = Date.now();
+      const data = {
+        id, studentId, subject, title, format,
+        url: format==="url" ? url : "",
+        text: format==="text" ? text : "",
+        createdAt: now, updatedAt: now
+      };
+      await db.ref(`lessons/${studentId}/${id}`).set(data);
+      lessonForm.reset();
+      l_subject.innerHTML = `<option value="">— Select Subject —</option>`;
+      l_subject.disabled = true;
+      textWrap.style.display = "none";
+      urlWrap.style.display = "";
+    });
+
+    // ----- Lessons: READ (rendered in lessons listener) -----
+    function renderLessonsTable(allLessonsObj){
+      lessonsTableBody.innerHTML = "";
+      const students = studentsCache || {};
+      const studentIds = Object.keys(allLessonsObj || {});
+      if(!studentIds.length){
+        lessonsTableBody.innerHTML = `<tr><td colspan="6" class="muted">No lessons yet.</td></tr>`;
+        return;
+      }
+      studentIds.forEach(sid=>{
+        const lessons = allLessonsObj[sid] || {};
+        Object.values(lessons).forEach(l=>{
+          const tr = document.createElement("tr");
+          const source = l.format === "url"
+            ? `<a href="${l.url}" target="_blank">Open Link</a>`
+            : (l.text ? "Text" : "-");
+          tr.innerHTML = `
+            <td>${students[sid]?.name || sid}</td>
+            <td>${l.subject}</td>
+            <td>${l.title}</td>
+            <td>${source}</td>
+            <td>${formatDate(l.createdAt)}</td>
+            <td class="actions">
+              <button class="btn" onclick='editLesson("${sid}","${l.id}")'>✏️ Edit</button>
+              <button class="btn danger" onclick='deleteLesson("${sid}","${l.id}")'>🗑️ Delete</button>
+            </td>
+          `;
+          lessonsTableBody.appendChild(tr);
+        });
+      });
+    }
+
+    // ----- Students: EDIT -----
+    function startEditStudent(id){
+      const s = studentsCache[id];
+      if(!s) return;
+      currentEditId = id;
+      e_id.value = id;
+      e_name.value = s.name || "";
+      e_email.value = s.email || "";
+      e_class.value = s.class || "";
+      e_status.value = s.status || "Active";
+      e_created.textContent = formatDate(s.createdAt);
+      e_updated.textContent = formatDate(s.updatedAt);
+
+      const selected = new Set(s.subjects ? Object.keys(s.subjects) : []);
+      renderSubjectChips(e_subjectsWrap, selected, "e_");
+      openDrawer();
+    }
+
+    async function deleteStudentConfirm(){
+      if(!currentEditId) return;
+      const ok = confirm("Delete this student and ALL their lessons?");
+      if(!ok) return;
+      const id = currentEditId;
+      await db.ref("students/"+id).remove();
+      await db.ref("lessons/"+id).remove();
+      closeDrawer();
+    }
+
+    editForm.addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      if(!currentEditId) return;
+      const updates = {
+        name: e_name.value.trim(),
+        email: e_email.value.trim(),
+        class: e_class.value.trim(),
+        status: e_status.value,
+        updatedAt: Date.now()
+      };
+      const subs = getCheckedSubjects(e_subjectsWrap);
+      updates.subjects = subs.reduce((acc,s)=>(acc[s]=true,acc),{});
+      await db.ref("students/"+currentEditId).update(updates);
+
+      // Optional safety: if a subject was removed, you may keep old lessons;
+      // or delete mismatching-subject lessons. Here we KEEP them.
+      closeDrawer();
+    });
+
+    // ----- Lessons: EDIT / DELETE -----
+    function editLesson(studentId, lessonId){
+      // Fetch once and prompt minimal editor (title + subject + source)
+      db.ref(`lessons/${studentId}/${lessonId}`).once("value").then(snap=>{
+        const l = snap.val(); if(!l) return;
+        const s = studentsCache[studentId];
+        const studentSubjects = s?.subjects ? Object.keys(s.subjects) : SUBJECTS;
+
+        const newTitle = prompt("Edit Title:", l.title || "");
+        if(newTitle === null) return;
+
+        // Choose subject if needed
+        const newSubject = prompt(`Edit Subject (choose: ${studentSubjects.join(", ")}):`, l.subject || studentSubjects[0]);
+        if(newSubject === null) return;
+
+        let data = { title: newTitle.trim(), subject: newSubject.trim(), updatedAt: Date.now() };
+
+        if(l.format === "url"){
+          const newUrl = prompt("Edit URL:", l.url || "");
+          if(newUrl === null) return;
+          data.url = newUrl.trim();
+        } else {
+          const newText = prompt("Edit text content:", l.text || "");
+          if(newText === null) return;
+          data.text = newText.trim();
+        }
+
+        db.ref(`lessons/${studentId}/${lessonId}`).update(data);
+      });
+    }
+
+    function deleteLesson(studentId, lessonId){
+      if(confirm("Delete this lesson?")){
+        db.ref(`lessons/${studentId}/${lessonId}`).remove();
+      }
+    }
+
+    // Expose some functions globally (for onclick)
+    window.startEditStudent = startEditStudent;
+    window.deleteLesson = deleteLesson;
+    window.editLesson = editLesson;
+    window.closeDrawer = closeDrawer;
+  </script>
+</body>
+</html>

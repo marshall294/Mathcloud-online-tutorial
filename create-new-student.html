@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — MathCloud Tutorial</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+  <style>
+    body { font-family: "Poppins", sans-serif; margin:0; background:#f9fafb; }
+    header { background:#2563eb; color:white; text-align:center; padding:1rem; font-size:1.4rem; font-weight:600; }
+    main { max-width:1100px; margin:auto; padding:1rem; }
+    h2 { margin-top:2rem; color:#2563eb; }
+    form { background:white; padding:1rem; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    label { display:block; margin-top:1rem; font-weight:500; }
+    input, select { width:100%; padding:.6rem; border:1px solid #ccc; border-radius:6px; }
+    .checkbox-group { display:flex; flex-wrap:wrap; gap:1rem; margin-top:.5rem; }
+    .checkbox-group label { font-weight:400; }
+    button { margin-top:1rem; background:#2563eb; color:white; padding:.6rem 1.2rem; border:none; border-radius:6px; cursor:pointer; font-weight:500; }
+    button:hover { opacity:0.9; }
+    table { width:100%; border-collapse:collapse; margin-top:1rem; background:white; border-radius:8px; overflow:hidden; }
+    th, td { padding:.8rem; border-bottom:1px solid #eee; text-align:left; }
+    th { background:#f1f5f9; }
+    .actions button { margin-right:.4rem; padding:.4rem .8rem; font-size:.9rem; }
+    .danger { background:#ef4444; color:white; }
+    .success { background:#16a34a; color:white; }
+  </style>
+</head>
+<body>
+<header>📚 MathCloud Tutorial — Admin</header>
+<main>
+  <!-- Create / Edit Student -->
+  <h2>Create / Edit Student</h2>
+  <form id="studentForm">
+    <input type="hidden" id="studentId">
+    <label>Name <input type="text" id="studentName" required></label>
+    <label>Email <input type="email" id="studentEmail" required></label>
+    <label>Password <input type="password" id="studentPassword" placeholder="Leave empty if not updating"></label>
+    <label>Subjects</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" value="Mathematics"> Mathematics</label>
+      <label><input type="checkbox" value="Science"> Science</label>
+      <label><input type="checkbox" value="Physics"> Physics</label>
+      <label><input type="checkbox" value="ICT"> ICT</label>
+      <label><input type="checkbox" value="Further Mathematics"> Further Mathematics</label>
+    </div>
+    <button type="submit">💾 Save Student</button>
+  </form>
+
+  <!-- Student List -->
+  <h2>Students</h2>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Subjects</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="studentsTable"></tbody>
+  </table>
+</main>
+
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWdRUrqDZfs5LfLmrZmp65AQicunmI7HY",
+    authDomain: "project-1b70d.firebaseapp.com",
+    databaseURL: "https://project-1b70d-default-rtdb.firebaseio.com",
+    projectId: "project-1b70d",
+    storageBucket: "project-1b70d.firebasestorage.app",
+    messagingSenderId: "910870680292",
+    appId: "1:910870680292:web:ee707c90033400f1ba92f1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const auth = firebase.auth();
+
+  const studentForm = document.getElementById('studentForm');
+  const studentsTable = document.getElementById('studentsTable');
+  const studentIdField = document.getElementById('studentId');
+
+  // Add / Update Student
+  studentForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const id = studentIdField.value;
+    const name = document.getElementById('studentName').value;
+    const email = document.getElementById('studentEmail').value;
+    const password = document.getElementById('studentPassword').value;
+    const subjects = Array.from(studentForm.querySelectorAll('input[type=checkbox]:checked')).map(cb => cb.value);
+
+    if (!subjects.length) {
+      alert("Please select at least one subject");
+      return;
+    }
+
+    try {
+      if (id) {
+        // Update existing student
+        await db.ref("students/" + id).update({ name, email, subjects });
+        alert("Student updated!");
+      } else {
+        // Create Auth + student
+        const userCred = await auth.createUserWithEmailAndPassword(email, password);
+        await db.ref("students/" + userCred.user.uid).set({ name, email, subjects });
+        alert("Student created!");
+      }
+      studentForm.reset();
+      studentIdField.value = "";
+    } catch (err) {
+      alert("Error: " + err.message);
+    }
+  });
+
+  // Render Students
+  db.ref("students").on("value", snapshot => {
+    studentsTable.innerHTML = "";
+    snapshot.forEach(child => {
+      const student = child.val();
+      const id = child.key;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${student.name}</td>
+        <td>${student.email}</td>
+        <td>${student.subjects.join(", ")}</td>
+        <td class="actions">
+          <button class="success" onclick="editStudent('${id}')">Edit</button>
+          <button class="danger" onclick="deleteStudent('${id}')">Delete</button>
+        </td>
+      `;
+      studentsTable.appendChild(tr);
+    });
+  });
+
+  // Edit Student
+  function editStudent(id) {
+    db.ref("students/" + id).once("value").then(snap => {
+      const s = snap.val();
+      studentIdField.value = id;
+      document.getElementById('studentName').value = s.name;
+      document.getElementById('studentEmail').value = s.email;
+      studentForm.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = s.subjects.includes(cb.value));
+    });
+  }
+
+  // Delete Student
+  function deleteStudent(id) {
+    if (confirm("Delete this student?")) {
+      db.ref("students/" + id).remove();
+    }
+  }
+
+  window.editStudent = editStudent;
+  window.deleteStudent = deleteStudent;
+</script>
+</body>
+</html>
