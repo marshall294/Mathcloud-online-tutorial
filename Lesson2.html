@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year 10 - Tissues and Organs | MathCloud Tutorial</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fdfdfd;
+      color: #333;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    section {
+      padding: 30px 15px;
+      max-width: 900px;
+      margin: auto;
+    }
+    section h2 {
+      color: #2c3e50;
+      border-left: 5px solid #3498db;
+      padding-left: 10px;
+    }
+    img {
+      width: 100%;
+      max-width: 500px;
+      display: block;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .assessment {
+      background: #ecf0f1;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .assessment h3 {
+      margin-top: 0;
+    }
+    .question {
+      margin-bottom: 15px;
+    }
+    .question input {
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #3498db;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    @media (max-width: 600px) {
+      nav a {
+        display: block;
+        margin: 8px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>MathCloud Tutorial - Year 10 Biology</h1>
+  <nav>
+    <a href="#intro">Introduction</a>
+    <a href="#diagrams">Diagrams</a>
+    <a href="#application">Applications</a>
+    <a href="#assessment">Assessment</a>
+  </nav>
+</header>
+
+<!-- Introduction -->
+<section id="intro">
+  <h2>Introduction: Tissues and Organs</h2>
+  <p>
+    In Biology, a <b>tissue</b> is a group of similar cells that work together to carry out a specific function.  
+    An <b>organ</b> is made up of different tissues working together to perform a complex function in the body.  
+    Understanding tissues and organs helps us appreciate how living things are structured and how they function effectively.
+  </p>
+</section>
+
+<!-- Diagrams -->
+<section id="diagrams">
+  <h2>Diagrams</h2>
+  <p>Below are some key tissues and organs of humans and plants:</p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Human_organs_labeled.svg" alt="Human Organs">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Plant_cell_structure.svg" alt="Plant Tissues">
+</section>
+
+<!-- Application -->
+<section id="application">
+  <h2>Applications of Tissues and Organs</h2>
+  <p>
+    - In humans, the <b>heart</b> (an organ) is made up of muscle tissue, nerve tissue, and blood vessels, all working together to pump blood. <br>
+    - In plants, the <b>leaf</b> (an organ) contains tissues such as the epidermis, mesophyll, and xylem/phloem which support photosynthesis and transport. <br>
+    - Medical science depends on the understanding of tissues and organs to treat diseases, perform surgeries, and develop transplants. <br>
+  </p>
+</section>
+
+<!-- Assessment -->
+<section id="assessment" class="assessment">
+  <h2>Assessment</h2>
+
+  <h3>CBT Questions</h3>
+  <div class="question">
+    1. What is a tissue?<br>
+    <input type="radio" name="q1" value="A"> A group of similar cells working together<br>
+    <input type="radio" name="q1" value="B"> A group of different organs<br>
+  </div>
+
+  <div class="question">
+    2. Which organ pumps blood in humans?<br>
+    <input type="radio" name="q2" value="A"> Lungs<br>
+    <input type="radio" name="q2" value="B"> Heart<br>
+  </div>
+
+  <div class="question">
+    3. In plants, which organ is mainly responsible for photosynthesis?<br>
+    <input type="radio" name="q3" value="A"> Root<br>
+    <input type="radio" name="q3" value="B"> Leaf<br>
+  </div>
+
+  <button onclick="checkAnswers()">Submit CBT</button>
+  <p id="result"></p>
+
+  <h3>Theory Questions</h3>
+  <ol>
+    <li>Explain the difference between a tissue and an organ.</li>
+    <li>List three examples of human organs and their functions.</li>
+    <li>Describe how plant leaves are adapted as organs for photosynthesis.</li>
+  </ol>
+</section>
+
+<footer>
+  <p>Contact us: mathcloudtutorial@gmail.com</p>
+  <p>Follow us: Facebook | Twitter | Instagram | WhatsApp (+234810234148)</p>
+</footer>
+
+<script>
+  function checkAnswers() {
+    let score = 0;
+    if (document.querySelector('input[name="q1"]:checked')?.value === "A") score++;
+    if (document.querySelector('input[name="q2"]:checked')?.value === "B") score++;
+    if (document.querySelector('input[name="q3"]:checked')?.value === "B") score++;
+
+    document.getElementById("result").innerText = "You scored " + score + "/3";
+  }
+</script>
+
+</body>
+</html>
