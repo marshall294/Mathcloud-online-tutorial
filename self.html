@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Tutor: Common Factors, HCF, LCM & Prime Numbers</title>
+  <style>
+    :root{
+      --bg:#0f172a; /* slate-900 */
+      --card:#111827; /* gray-900 */
+      --muted:#94a3b8; /* slate-400 */
+      --text:#e5e7eb; /* gray-200 */
+      --accent:#22c55e; /* green-500 */
+      --accent-2:#3b82f6; /* blue-500 */
+      --warn:#ef4444; /* red-500 */
+      --ring:#334155; /* slate-700 */
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;}
+    header{padding:24px 16px;text-align:center}
+    header h1{margin:0;font-size:clamp(22px,3vw,32px)}
+    header p{margin:6px 0 0;color:var(--muted)}
+
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+    .card{background:linear-gradient(180deg,#0f172a,#0a1222);border:1px solid var(--ring);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:18px}
+
+    .row{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:900px){.row{grid-template-columns:1fr 2fr}}
+
+    .input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--ring);background:#0b1325;color:var(--text);outline:none}
+    .btn{appearance:none;border:1px solid var(--ring);background:#0c1a33;color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;transition:.2s ease;}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,.2)}
+    .btn.primary{background:linear-gradient(90deg,#2563eb,#22c55e);border:0}
+    .btn.ghost{background:transparent}
+
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .tab{padding:10px 12px;border-radius:999px;border:1px solid var(--ring);cursor:pointer;color:var(--muted)}
+    .tab.active{background:linear-gradient(90deg,#2563eb33,#22c55e33);color:var(--text);border-color:#2563eb}
+
+    .topic{display:none;margin-top:12px}
+    .topic.active{display:block}
+
+    .q{border:1px solid var(--ring);border-radius:14px;padding:12px;margin:12px 0;background:#0c152b}
+    .q h4{margin:0 0 6px}
+    .q small{color:var(--muted)}
+
+    .result{border-radius:14px;padding:12px;margin-top:14px}
+    .right{background:#052e1b;border:1px solid #14532d}
+    .wrong{background:#2a0b0b;border:1px solid #7f1d1d}
+
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border:1px solid var(--ring);padding:10px;text-align:left}
+    th{background:#0c1933}
+
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--ring);color:var(--muted);font-size:12px}
+
+    .footer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Self‑Tutor: Common Factors, HCF, LCM & Prime Numbers</h1>
+    <p>Answer 10 questions per topic • Submit to see your score and corrections instantly.</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="studentName" class="badge">Student Name</label>
+          <input id="studentName" class="input" placeholder="Type your full name" />
+
+          <div class="footer-actions">
+            <button class="btn primary" id="regenerate">↻ New Set</button>
+            <button class="btn" id="submitAll">✓ Submit All Topics</button>
+            <button class="btn ghost" id="printBtn">🖨️ Print</button>
+          </div>
+        </div>
+        <div>
+          <div class="tabs">
+            <div class="tab active" data-tab="cf">Common Factors</div>
+            <div class="tab" data-tab="hcf">HCF</div>
+            <div class="tab" data-tab="lcm">LCM</div>
+            <div class="tab" data-tab="prime">Prime Numbers</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Topics -->
+      <section id="cf" class="topic active"></section>
+      <section id="hcf" class="topic"></section>
+      <section id="lcm" class="topic"></section>
+      <section id="prime" class="topic"></section>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Helpers ----------
+    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const gcd = (a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a};
+    const lcm = (a,b)=>Math.abs(a*b)/gcd(a,b);
+    const factors=(n)=>{const out=[];for(let i=1;i<=n;i++){if(n%i===0) out.push(i)}return out};
+    const commonFactors=(a,b)=>{const A=factors(a),B=factors(b);return A.filter(x=>B.includes(x))};
+    const isPrime=(n)=>{if(n<2) return false; if(n%2===0) return n===2; for(let i=3;i*i<=n;i+=2){ if(n%i===0) return false } return true};
+    const primesUpTo=(N)=>{const arr=[];for(let i=2;i<=N;i++) if(isPrime(i)) arr.push(i);return arr};
+
+    const byId = id => document.getElementById(id);
+    const nameInput = byId('studentName');
+
+    // Persist name for convenience
+    nameInput.value = localStorage.getItem('selfTutorName')||'';
+    nameInput.addEventListener('input',()=> localStorage.setItem('selfTutorName', nameInput.value.trim()))
+
+    // ---------- Question Generators ----------
+    function genCommonFactorsQs(){
+      const qs=[];
+      for(let i=0;i<10;i++){
+        let a=rand(6,40), b=rand(6,40);
+        // avoid trivial co-prime too often
+        if(gcd(a,b)===1){ if(Math.random()<0.6){ b=a*rand(2,3) } }
+        const cf = commonFactors(a,b);
+        const prompt = `List all common factors of ${a} and ${b} in ascending order, separated by commas.`;
+        const answer = cf.join(', ');
+        qs.push({type:'list', prompt, correct:answer, meta:{a,b,cf}});
+      }
+      return qs;
+    }
+
+    function genHCFQs(){
+      const qs=[];
+      for(let i=0;i<10;i++){
+        let a=rand(10,120), b=rand(10,120);
+        const ans=gcd(a,b);
+        if(ans===1 && Math.random()<0.6){ // make non-trivial
+          const k=rand(2,6); a*=k; b*=k;
+        }
+        qs.push({type:'number', prompt:`Find the HCF (gcd) of ${a} and ${b}.`, correct:String(gcd(a,b)), meta:{a,b}});
+      }
+      return qs;
+    }
+
+    function genLCMQs(){
+      const qs=[];
+      for(let i=0;i<10;i++){
+        let a=rand(3,30), b=rand(3,30);
+        const val = Math.round(lcm(a,b));
+        // avoid huge LCMs
+        if(val>400){ a=rand(3,15); b=rand(3,15); }
+        qs.push({type:'number', prompt:`Find the LCM of ${a} and ${b}.`, correct:String(Math.round(lcm(a,b))), meta:{a,b}});
+      }
+      return qs;
+    }
+
+    function genPrimeQs(){
+      const qs=[];
+      for(let i=0;i<10;i++){
+        const n = rand(2, 97);
+        const ans = isPrime(n) ? 'yes' : 'no';
+        qs.push({type:'yn', prompt:`Is ${n} a prime number? (yes/no)`, correct:ans, meta:{n}});
+      }
+      return qs;
+    }
+
+    // ---------- Renderers ----------
+    function renderTopic(el, title, key, questions){
+      el.innerHTML = `
+        <h3 style="margin:8px 0 4px">${title} <span class="badge">10 Questions</span></h3>
+        <div id="${key}-qs"></div>
+        <div class="footer-actions">
+          <button class="btn" data-submit="${key}">Submit ${title}</button>
+          <button class="btn ghost" data-reset="${key}">Reset</button>
+        </div>
+        <div id="${key}-report"></div>
+      `;
+
+      const qsWrap = byId(`${key}-qs`);
+      questions.forEach((q,idx)=>{
+        const qId = `${key}-${idx}`;
+        let inputHtml = '';
+        if(q.type==='number'){
+          inputHtml = `<input class="input" type="number" step="1" inputmode="numeric" placeholder="Your answer" id="ans-${qId}">`;
+        } else if(q.type==='yn'){
+          inputHtml = `<input class="input" type="text" placeholder="yes or no" id="ans-${qId}">`;
+        } else { // list
+          inputHtml = `<input class="input" type="text" placeholder="e.g. 1, 2, 3" id="ans-${qId}">`;
+        }
+        qsWrap.insertAdjacentHTML('beforeend', `
+          <div class="q">
+            <h4>Q${idx+1}</h4>
+            <div>${q.prompt}</div>
+            <div style="margin-top:8px">${inputHtml}</div>
+          </div>
+        `);
+      });
+    }
+
+    function normalizeList(txt){
+      if(!txt) return [];
+      return txt.split(',').map(x=>x.trim()).filter(x=>x!=='' ).map(Number).sort((a,b)=>a-b);
+    }
+
+    function gradeTopic(key, questions){
+      const reportEl = byId(`${key}-report`);
+      let correctCount = 0;
+      const rows = [['#','Question','Your Answer','Result','Correct Answer']];
+
+      questions.forEach((q,idx)=>{
+        const qId = `${key}-${idx}`;
+        const field = byId(`ans-${qId}`);
+        let user = (field?.value ?? '').trim();
+        let ok = false, correctShown = q.correct;
+
+        if(q.type==='number'){
+          ok = (user !== '' && Number(user) === Number(q.correct));
+        } else if(q.type==='yn'){
+          user = user.toLowerCase();
+          ok = (user === q.correct);
+        } else {
+          // list compare as sorted unique numbers
+          const u = normalizeList(user);
+          const c = normalizeList(q.correct);
+          ok = (u.length === c.length && u.every((v,i)=>v===c[i]));
+          correctShown = c.join(', ');
+        }
+
+        if(ok) correctCount++;
+        const status = ok ? '✔️ Correct' : '❌ Wrong';
+        const qText = q.prompt.replaceAll('<','&lt;');
+        rows.push([`Q${idx+1}`, qText, user || '—', status, correctShown]);
+
+        // Color feedback per question
+        const parent = field.closest('.q');
+        parent.classList.remove('right','wrong');
+        parent.classList.add(ok ? 'right' : 'wrong');
+      });
+
+      // Build table
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const tbody = document.createElement('tbody');
+      thead.innerHTML = `<tr>${rows[0].map(h=>`<th>${h}</th>`).join('')}</tr>`;
+      rows.slice(1).forEach(r=>{
+        const tr = document.createElement('tr');
+        r.forEach((cell,i)=>{
+          const td = document.createElement('td');
+          td.textContent = String(cell);
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(thead); table.appendChild(tbody);
+
+      const scorePct = Math.round((correctCount / questions.length) * 100);
+      reportEl.innerHTML = `
+        <div class="q" style="background:#0b1a35">
+          <h4>Score: ${correctCount} / ${questions.length}  (${scorePct}%)</h4>
+          <div class="badge">Green = Correct, Red = Wrong</div>
+        </div>
+      `;
+      reportEl.appendChild(table);
+    }
+
+    function resetTopic(key){
+      const inputs = document.querySelectorAll(`#${key} input[id^='ans-']`);
+      inputs.forEach(i=>{ i.value=''; const parent=i.closest('.q'); parent?.classList.remove('right','wrong');});
+      byId(`${key}-report`).innerHTML='';
+    }
+
+    // ---------- Bootstrap ----------
+    let data = {
+      cf: genCommonFactorsQs(),
+      hcf: genHCFQs(),
+      lcm: genLCMQs(),
+      prime: genPrimeQs()
+    };
+
+    renderTopic(byId('cf'), 'Common Factors', 'cf', data.cf);
+    renderTopic(byId('hcf'), 'HCF (Greatest Common Factor)', 'hcf', data.hcf);
+    renderTopic(byId('lcm'), 'LCM (Lowest Common Multiple)', 'lcm', data.lcm);
+    renderTopic(byId('prime'), 'Prime Numbers', 'prime', data.prime);
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach(t=>{
+      t.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('.topic').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        byId(t.dataset.tab).classList.add('active');
+      })
+    })
+
+    // Buttons per topic
+    document.addEventListener('click', (e)=>{
+      const submitKey = e.target.getAttribute('data-submit');
+      if(submitKey){
+        if(!nameInput.value.trim()) { alert('Please enter your name first.'); return; }
+        gradeTopic(submitKey, data[submitKey]);
+      }
+      const resetKey = e.target.getAttribute('data-reset');
+      if(resetKey){ resetTopic(resetKey); }
+    });
+
+    // Submit All
+    byId('submitAll').addEventListener('click', ()=>{
+      if(!nameInput.value.trim()) { alert('Please enter your name first.'); return; }
+      ['cf','hcf','lcm','prime'].forEach(key=> gradeTopic(key, data[key]));
+    });
+
+    // Regenerate
+    byId('regenerate').addEventListener('click', ()=>{
+      if(!confirm('Generate a brand-new set of questions for all topics?')) return;
+      data = { cf:genCommonFactorsQs(), hcf:genHCFQs(), lcm:genLCMQs(), prime:genPrimeQs() };
+      renderTopic(byId('cf'), 'Common Factors', 'cf', data.cf);
+      renderTopic(byId('hcf'), 'HCF (Greatest Common Factor)', 'hcf', data.hcf);
+      renderTopic(byId('lcm'), 'LCM (Lowest Common Multiple)', 'lcm', data.lcm);
+      renderTopic(byId('prime'), 'Prime Numbers', 'prime', data.prime);
+    });
+
+    // Print
+    byId('printBtn').addEventListener('click', ()=> window.print());
+  </script>
+</body>
+</html>
