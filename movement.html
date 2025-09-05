@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Year 8 — Movement (Chicken Wing) | Teacher Marshall Jacob</title>
+  <style>
+    :root{--accent:#0ea5e9;--muted:#64748b;--card:#ffffff;--bg:#f1f5f9}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial; margin:0; background:var(--bg); color:#0f172a}
+    .container{max-width:980px;margin:20px auto;padding:18px}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#22c55e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:6px 0 18px;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:900px){.grid{grid-template-columns:2fr 1fr}}
+
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .muted{color:var(--muted);font-size:14px}
+
+    .diagram{width:100%;max-width:560px;margin:12px auto}
+    .mcq{margin-bottom:10px;border-left:3px solid #e0f2fe;padding:10px;border-radius:6px}
+    label.choice{display:block;margin:6px 0;padding:6px;border-radius:6px;cursor:pointer}
+    input[type=radio]{margin-right:8px}
+
+    .row{display:flex;gap:8px}
+    .row > *{flex:1}
+    input[type=text],select,textarea{width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:8px}
+    textarea{min-height:90px}
+
+    .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;border:none;cursor:pointer}
+    .btn.secondary{background:#fff;color:var(--accent);border:1px solid #bae6fd}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    .teacher-panel{max-height:360px;overflow:auto}
+    .submission{border-bottom:1px dashed #e2e8f0;padding:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">MJ</div>
+        <div>
+          <h1>Teacher Marshall Jacob — Year 8 Biology</h1>
+          <p class="lead">Topic: Movement — How the skeletal and muscular systems in a chicken wing work together</p>
+        </div>
+      </div>
+      <div>
+        <small class="muted">Responsive lesson page — mobile & desktop friendly</small>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card" aria-labelledby="intro">
+        <div class="section-title"><h2 id="intro">Introduction</h2><span class="muted">Musculoskeletal teamwork</span></div>
+        <p>Movement happens when <strong>bones</strong> act as levers, <strong>joints</strong> act as pivots, and <strong>muscles</strong> pull on bones using <strong>tendons</strong>. A chicken wing is an excellent model for learning this because it has the same basic parts found in human arms: the <em>humerus</em>, <em>radius</em>, <em>ulna</em>, and hinge-like joints moved by pairs of muscles.</p>
+
+        <h3>Why study movement with a chicken wing?</h3>
+        <ul>
+          <li>It clearly shows how <strong>antagonistic muscle pairs</strong> (like biceps and triceps) cause <em>flexion</em> and <em>extension</em>.</li>
+          <li>It reveals the roles of <strong>tendons</strong> (connect muscle to bone) and <strong>ligaments</strong> (connect bone to bone).</li>
+          <li>It helps connect classroom learning to <strong>sports science</strong>, <strong>physiotherapy</strong>, and <strong>injury prevention</strong>.</li>
+        </ul>
+
+        <h3>Real‑world applications</h3>
+        <ol>
+          <li>Designing safer training plans in PE and sports by understanding joint limits.</li>
+          <li>Physiotherapy and rehabilitation after sprains, strains, or fractures.</li>
+          <li>Robotics and prosthetics: copying lever systems and tendon-like cables.</li>
+          <li>Veterinary practice: comparing limb function across animals.</li>
+        </ol>
+      </section>
+
+      <aside class="card">
+        <div class="section-title"><h3>Learning outcomes</h3><span class="muted">You will be able to:</span></div>
+        <ul>
+          <li>Label key bones of a chicken wing: humerus, radius, ulna.</li>
+          <li>Describe hinge joints and the role of cartilage and synovial fluid.</li>
+          <li>Explain how antagonistic muscle pairs cause movement.</li>
+          <li>Identify the roles of tendons and ligaments.</li>
+          <li>Relate levers (effort, load, fulcrum) to limb movement.</li>
+        </ul>
+      </aside>
+
+<section class="card" aria-labelledby="diagrams">
+  <div class="section-title">
+    <h2 id="diagrams">Diagrams & Explanations</h2>
+    <span class="muted">Click below to view skeleton system</span>
+  </div>
+
+  <div style="text-align:center; margin:40px 0;">
+    <a href="skeleton.html" 
+       style="
+         display:inline-block;
+         padding:15px 40px;
+         font-size:20px;
+         font-weight:bold;
+         color:#fff;
+         background:linear-gradient(145deg,#2563eb,#1e40af);
+         border:none;
+         border-radius:12px;
+         box-shadow:0 6px #0f172a, 0 8px 20px rgba(0,0,0,0.3);
+         text-decoration:none;
+         transition:all 0.2s ease-in-out;
+       "
+       onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 9px #0f172a,0 12px 25px rgba(0,0,0,0.35)'"
+       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px #0f172a,0 8px 20px rgba(0,0,0,0.3)'"
+       onmousedown="this.style.transform='translateY(2px)';this.style.boxShadow='0 3px #0f172a,0 6px 15px rgba(0,0,0,0.3)'"
+       onmouseup="this.style.transform='translateY(-3px)';this.style.boxShadow='0 9px #0f172a,0 12px 25px rgba(0,0,0,0.35)'">
+      🦴 View Human Skeleton System
+    </a>
+  </div>
+</section>
+
+
+      <section class="card" aria-labelledby="summary">
+        <div class="section-title"><h2 id="summary">Summary</h2><span class="muted">Quick recap</span></div>
+        <ul>
+          <li>Bones act as levers; joints act as pivots; muscles apply pulling forces through tendons.</li>
+          <li>Antagonistic pairs (flexor/extensor) create controlled movement in one plane at hinge joints.</li>
+          <li>Ligaments stabilise joints; cartilage and synovial fluid reduce friction and wear.</li>
+          <li>Wing anatomy mirrors human arm function (humerus, radius, ulna).</li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="assessment">
+        <div class="section-title"><h2 id="assessment">Assessment</h2><span class="muted">30 CBT + 5 theory — submit to teacher</span></div>
+
+        <form id="assessmentForm">
+          <fieldset class="card" style="padding:12px;margin-bottom:10px">
+            <legend><strong>Student information</strong></legend>
+            <div class="row">
+              <input type="text" id="studentName" placeholder="Student name" required />
+              <input type="text" id="studentClass" placeholder="Class (e.g. Year 8)" value="Year 8" required />
+            </div>
+            <div style="margin-top:8px" class="row">
+              <input type="text" id="studentSubject" placeholder="Subject (e.g. Biology)" value="Biology" required />
+              <input type="text" id="studentId" placeholder="Student ID (optional)" />
+            </div>
+          </fieldset>
+
+          <div id="mcqList"><!-- JS will populate 30 MCQs here --></div>
+
+          <div style="margin-top:12px" class="card">
+            <h4>Theory questions</h4>
+            <p class="muted">Answer any 3 — teacher will score out of 25 marks.</p>
+            <div>
+              <label>1. Describe how antagonistic muscles move the chicken wing at the elbow (6 marks)</label>
+              <textarea data-qid="T1" placeholder="Your answer..."></textarea>
+            </div>
+            <div>
+              <label>2. Explain the roles of tendons and ligaments in wing movement (5 marks)</label>
+              <textarea data-qid="T2" placeholder="Your answer..."></textarea>
+            </div>
+            <div>
+              <label>3. Outline what happens at a hinge joint during flexion and extension (4 marks)</label>
+              <textarea data-qid="T3" placeholder="Your answer..."></textarea>
+            </div>
+            <div>
+              <label>4. Define origin and insertion of a muscle and give one example in the wing (5 marks)</label>
+              <textarea data-qid="T4" placeholder="Your answer..."></textarea>
+            </div>
+            <div>
+              <label>5. Classify the elbow as a lever system and identify fulcrum, effort, and load (5 marks)</label>
+              <textarea data-qid="T5" placeholder="Your answer..."></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button type="button" class="btn" id="submitBtn">Send to teacher (email)</button>
+            <button type="button" class="btn secondary" id="saveLocal">Save locally</button>
+            <button type="button" class="btn secondary" id="viewSubmissions">Teacher view</button>
+            <button type="button" class="btn secondary" id="downloadZip">Download JSON</button>
+          </div>
+        </form>
+
+        <div id="feedback" style="margin-top:12px"></div>
+
+        <div id="teacherPanel" class="card teacher-panel" style="display:none;margin-top:12px">
+          <h4>Saved submissions</h4>
+          <div id="submissionsList"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <small>Created for Teacher Marshall Jacob • Topic: Movement (Chicken Wing) • Year 8</small>
+    </footer>
+  </div>
+
+  <script>
+    // 30 CBT questions focused on movement and chicken wing anatomy
+    const CBT = [
+      [1,"Bones act as ______ in movement systems.",["Motors","Levers","Springs","Sensors"],1],
+      [2,"The elbow joint in a chicken wing is mainly a ______ joint.",["Ball-and-socket","Pivot","Hinge","Gliding"],2],
+      [3,"Which bones form the chicken wing forearm?",["Femur and tibia","Radius and ulna","Humerus and femur","Tibia and fibula"],1],
+      [4,"The upper arm bone in the wing is called the:",["Humerus","Radius","Ulna","Carpal"],0],
+      [5,"Muscles attach to bones via:",["Ligaments","Cartilage","Tendons","Skin"],2],
+      [6,"Ligaments connect:",["Muscle to bone","Bone to bone","Muscle to muscle","Muscle to skin"],1],
+      [7,"When a flexor contracts at the elbow, the angle at the joint:",["Increases","Decreases","Stays the same","Reverses"],1],
+      [8,"The opposing muscle to a flexor is called an:",["Agonist","Antagonist","Synergist","Stabiliser"],1],
+      [9,"Which action straightens the elbow?",["Flexion","Extension","Rotation","Abduction"],1],
+      [10,"Cartilage at a joint mainly:",["Produces blood cells","Stores minerals","Reduces friction","Contracts to move"],2],
+      [11,"Synovial fluid helps by:",["Breaking down food","Cooling muscles","Lubricating joints","Producing hormones"],2],
+      [12,"In the elbow lever system, the fulcrum is at the:",["Wrist","Shoulder","Elbow joint","Hand"],2],
+      [13,"The effort in elbow flexion is produced by:",["Gravity","Biceps-like flexor","Triceps-like extensor","Ligaments"],1],
+      [14,"The load in elbow flexion can be:",["Fulcrum","Bone mass/held object","Synovial fluid","Cartilage"],1],
+      [15,"Muscles can:",["Push only","Pull only","Push and pull","Neither push nor pull"],1],
+      [16,"During extension, which muscle in the pair is the agonist?",["Flexor","Extensor","Both","Neither"],1],
+      [17,"Tendons are mostly made of:",["Elastic cartilage","Smooth muscle","Dense collagen fibres","Spongy bone"],2],
+      [18,"Overstretching a ligament is called a:",["Sprain","Strain","Fracture","Cramp"],0],
+      [19,"Overstretching a muscle or tendon is a:",["Sprain","Strain","Fracture","Dislocation"],1],
+      [20,"Which statement is true?",["Muscles push bones to move","Ligaments contract to move","Tendons transmit muscle pull to bones","Bones shorten to move"],2],
+      [21,"The radius and ulna are located in the:",["Upper arm","Forearm","Thigh","Lower leg"],1],
+      [22,"In a chicken wing dissection, pulling a tendon makes the:",["Bone dissolve","Joint melt","Wing segment move","Muscle turn to fat"],2],
+      [23,"A hinge joint mainly allows movement in:",["One plane","Two planes","Three planes","No planes"],0],
+      [24,"Which protects bone ends from wear?",["Ligament","Cartilage","Tendon","Muscle"],1],
+      [25,"Which best describes an antagonistic pair?",["Two muscles that both flex","Two muscles that both extend","Two muscles with opposite actions","Two bones that cross"],2],
+      [26,"Origin of a muscle is usually the ______ attachment.",["More movable","Less movable","Skin","Cartilage"],1],
+      [27,"Insertion is the ______ attachment.",["Less movable","More movable","Joint cavity","Bone marrow"],1],
+      [28,"When the flexor relaxes and the extensor contracts, the elbow:",["Flexes","Extends","Rotates","Hyperflexes"],1],
+      [29,"Which is NOT part of a synovial joint?",["Joint capsule","Synovial membrane","Articular cartilage","Growth plate of leaf"],3],
+      [30,"In lever terms, the elbow doing a biceps curl is typically:",["First-class lever","Second-class lever","Third-class lever","No lever"],2]
+    ];
+
+    const mcqList = document.getElementById('mcqList');
+    CBT.forEach(item=>{
+      const [id,q,choices] = item;
+      const div = document.createElement('div');
+      div.className='mcq';
+      div.innerHTML = `<strong>Q${id}.</strong> ${q}`;
+      choices.forEach((c,i)=>{
+        const idAttr = `q${id}c${i}`;
+        const label = document.createElement('label'); label.className='choice';
+        label.innerHTML = `<input type="radio" name="q${id}" value="${i}" id="${idAttr}"/> ${c}`;
+        div.appendChild(label);
+      });
+      mcqList.appendChild(div);
+    });
+
+    function gather() {
+      const studentName = document.getElementById('studentName').value.trim();
+      const studentClass = document.getElementById('studentClass').value.trim();
+      const studentSubject = document.getElementById('studentSubject').value.trim();
+      const studentId = document.getElementById('studentId').value.trim();
+      const mcqAnswers = {};
+      CBT.forEach(item=>{
+        const id = item[0];
+        const sel = document.querySelector(`input[name=q${id}]:checked`);
+        mcqAnswers[id] = sel ? Number(sel.value) : null;
+      });
+      const theoryEls = document.querySelectorAll('textarea[data-qid]');
+      const theoryAnswers = {};
+      theoryEls.forEach(t=>{theoryAnswers[t.getAttribute('data-qid')] = t.value.trim();});
+      return {studentName,studentClass,studentSubject,studentId,mcqAnswers,theoryAnswers,submittedAt:new Date().toISOString()};
+    }
+
+    document.getElementById('submitBtn').addEventListener('click',()=>{
+      const data = gather();
+      if(!data.studentName){alert('Please enter student name');return}
+      let body = `Name: ${data.studentName}\nClass: ${data.studentClass}\nSubject: ${data.studentSubject}\nID: ${data.studentId}\nSubmitted: ${data.submittedAt}\n\nMCQ answers:\n`;
+      Object.keys(data.mcqAnswers).forEach(k=>{body += `Q${k}: ${data.mcqAnswers[k] === null ? 'No answer' : data.mcqAnswers[k]}\n`});
+      body += '\nTheory answers:\n';
+      Object.keys(data.theoryAnswers).forEach(k=>{body += `${k}: ${data.theoryAnswers[k] ? data.theoryAnswers[k].slice(0,200) : 'No answer'}\n`});
+      const teacherEmail = prompt('Enter teacher email to send to (e.g. teacher@example.com)','');
+      if(!teacherEmail) { alert('Email not provided. Submission cancelled.'); return }
+      const subject = encodeURIComponent(`Assessment submission — ${data.studentName} — ${data.studentClass}`);
+      const mailto = `mailto:${encodeURIComponent(teacherEmail)}?subject=${subject}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    });
+
+    document.getElementById('saveLocal').addEventListener('click',()=>{
+      const data = gather();
+      if(!data.studentName){alert('Please enter student name');return}
+      const key = 'movement_submissions';
+      const saved = JSON.parse(localStorage.getItem(key)||'[]');
+      saved.push(data);
+      localStorage.setItem(key,JSON.stringify(saved));
+      document.getElementById('feedback').textContent = 'Saved locally. Teacher can use "Teacher view" to see submissions.';
+    });
+
+    const teacherPanel = document.getElementById('teacherPanel');
+    document.getElementById('viewSubmissions').addEventListener('click',()=>{
+      const pw = prompt('Enter teacher access code (default: teachermj)','');
+      if(pw !== 'teachermj'){alert('Access denied');return}
+      const key = 'movement_submissions';
+      const saved = JSON.parse(localStorage.getItem(key)||'[]');
+      const list = document.getElementById('submissionsList'); list.innerHTML='';
+      if(!saved.length){list.innerHTML='<div class="muted">No submissions yet.</div>'}
+      saved.slice().reverse().forEach(s=>{
+        const el = document.createElement('div'); el.className='submission';
+        el.innerHTML = `<strong>${s.studentName}</strong> — ${s.studentClass} — ${new Date(s.submittedAt).toLocaleString()}<div style="font-size:13px;color:#334155;margin-top:6px">MCQ: ${Object.entries(s.mcqAnswers).map(([k,v])=>`Q${k}:${v===null?'-':v}`).join(', ')}</div><div style="margin-top:6px"><details><summary>View theory answers</summary><pre style="white-space:pre-wrap">${Object.entries(s.theoryAnswers).map(([k,v])=>`${k}: ${v||'(no answer)'}`).join('\n\n')}</pre></details></div>`;
+        list.appendChild(el);
+      });
+      teacherPanel.style.display='block';
+      teacherPanel.scrollIntoView({behavior:'smooth'});
+    });
+
+    document.getElementById('downloadZip').addEventListener('click',()=>{
+      const key = 'movement_submissions';
+      const saved = JSON.parse(localStorage.getItem(key)||'[]');
+      const blob = new Blob([JSON.stringify(saved, null, 2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'movement_submissions.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
